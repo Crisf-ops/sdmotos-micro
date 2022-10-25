@@ -5,6 +5,8 @@ import com.sdmotos.sdmotosRecords.model.Vehicle;
 import com.sdmotos.sdmotosRecords.services.VehiclesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,26 +19,23 @@ public class VehiclesController {
     @Autowired
     VehiclesService vehiclesService;
 
-    @PostMapping(path = "/post")
-    public Vehicle createRepair(@RequestBody Vehicle vehicle){
-        try {
-            return vehiclesService.createReapirs(vehicle);
-        } catch (Exception e) {
-            log.error("Metodo: createRepair - Ocurrio un error al crear el registro de reparacion, body: " + vehicle);
-            log.error("Metodo: createRepair - Tipo de error: " + e);
-            return vehicle;
-        }
+    @PostMapping(path = "/createVehicle")
+    public ResponseEntity<Vehicle> createRepair(@RequestBody Vehicle vehicle){
+        Vehicle saveVehicle = vehiclesService.createVehicle(vehicle);
+        return saveVehicle == null ? new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
+                : new ResponseEntity<>(saveVehicle, HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "deleteRepair/{id}")
-    public String deleteRepairById(@PathVariable("id") String id){
-        log.info("Metodo: deleteRepairById - Ejecutando el eliminado del registro: " + id);
-        boolean ok = this.vehiclesService.deleteRepairs(id);
-        return ok ? "Se elimino el registro con el id: " + id : "Ocurrio un error al eliminar el registro con el id: " + id;
+    public ResponseEntity<Boolean> deleteRepairById(@PathVariable("id") String id){
+        boolean ok = this.vehiclesService.deleteVehicle(id);
+        return ok ? new ResponseEntity<>(true, HttpStatus.ACCEPTED)
+                : new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(path = "/all")
-    public List<Vehicle> getAllVehicles() {
-        return  vehiclesService.getAllVehicle();
+    public ResponseEntity<List<Vehicle>> getAllVehicles() {
+        List<Vehicle> vehicleList = vehiclesService.getAllVehicle();
+        return new ResponseEntity<>(vehicleList,HttpStatus.OK);
     }
 }

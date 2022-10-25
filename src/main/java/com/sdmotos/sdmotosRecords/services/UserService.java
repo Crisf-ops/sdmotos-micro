@@ -18,17 +18,19 @@ public class UserService {
     UserRepository userRepository;
 
     public List<User> getAllRecords(){
+        log.info("Metodo: getAllRecords, Obteniendo todos los usuarios");
         return userRepository.findAll();
     }
 
     public User getUser(Long id) {
+        log.info("Metodo: getUser, Obteniendo al usuario: {}", id );
         Optional<User> optionalUser = userRepository.findById(id);
         return optionalUser.orElseGet(User::new);
     }
 
     public boolean deleteUser(Long id) {
         try {
-            log.info("Metodo: deleteUser , borrando usuario {}",id);
+            log.info("Metodo: deleteUser , borrando al usuario {}",id);
             userRepository.deleteById(id);
             return true;
         } catch (Exception e) {

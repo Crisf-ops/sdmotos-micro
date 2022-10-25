@@ -2,7 +2,8 @@ package com.sdmotos.sdmotosRecords.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sdmotos.sdmotosRecords.utils.Enums.TypeVehicle;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -27,6 +28,8 @@ public class Vehicle implements Serializable {
     private TypeVehicle typeVehicle;
 
     private String model;
+
+    private String placa;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "documento")
