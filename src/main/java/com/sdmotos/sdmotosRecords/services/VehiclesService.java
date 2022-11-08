@@ -25,7 +25,7 @@ public class VehiclesService {
             return new Vehicle();
         }
     }
-    public boolean deleteVehicle(String id){
+    public boolean deleteVehicle(Long id){
         try {
             log.info("Metodo: deleteVehicle - Ejecutando el eliminado del registro: " + id);
             this.repairsRepository.deleteById(id);
@@ -43,14 +43,14 @@ public class VehiclesService {
 
     public Vehicle getVehicle(Long id) {
         log.info("Metodo: getVehicle, Obteniendo Vehiculo con el id: {} ",id);
-        Optional<Vehicle> optionalVehicle = repairsRepository.findById(String.valueOf(id));
+        Optional<Vehicle> optionalVehicle = repairsRepository.findById(id);
         return optionalVehicle.orElseGet(Vehicle::new);
     }
 
     public Vehicle updateVehicle(Vehicle vehicle, Long id) {
         log.info("Metodo: updateVehicle, Actualizando vehiculo: {}", id);
         Long updateVehicle = vehicle.getIdVehicles() == null ? id : vehicle.getIdVehicles();
-        return repairsRepository.findById(String.valueOf(updateVehicle)).map(
+        return repairsRepository.findById(updateVehicle).map(
                 vehicleUser -> {
                     vehicleUser.setRepair(vehicle.getRepair());
                     vehicleUser.setTypeVehicle(vehicle.getTypeVehicle());

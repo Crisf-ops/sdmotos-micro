@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "users")
+@Table(name = "clients")
 public class User implements Serializable {
 
     @Serial

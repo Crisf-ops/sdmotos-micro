@@ -27,7 +27,7 @@ public class VehiclesController {
     }
 
     @DeleteMapping(path = "deleteRepair/{id}")
-    public ResponseEntity<Boolean> deleteRepairById(@PathVariable("id") String id){
+    public ResponseEntity<Boolean> deleteRepairById(@PathVariable("id") Long id){
         boolean ok = this.vehiclesService.deleteVehicle(id);
         return ok ? new ResponseEntity<>(true, HttpStatus.ACCEPTED)
                 : new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
@@ -37,5 +37,12 @@ public class VehiclesController {
     public ResponseEntity<List<Vehicle>> getAllVehicles() {
         List<Vehicle> vehicleList = vehiclesService.getAllVehicle();
         return new ResponseEntity<>(vehicleList,HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/getVehicle")
+    public ResponseEntity<Vehicle> getVehicle(@RequestParam("id") Long id){
+        Vehicle vehicle = vehiclesService.getVehicle(id);
+        return vehicle.getIdVehicles() == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                : new ResponseEntity<>(vehicle, HttpStatus.OK);
     }
 }
